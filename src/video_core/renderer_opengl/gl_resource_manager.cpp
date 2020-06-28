@@ -51,6 +51,23 @@ void OGLTexture::Release() {
     handle = 0;
 }
 
+void OGLMemoryObject::Create() {
+    if (handle != 0)
+        return;
+
+    MICROPROFILE_SCOPE(OpenGL_ResourceCreation);
+    glCreateMemoryObjectsEXT(1, &handle);
+}
+
+void OGLMemoryObject::Release() {
+    if (handle == 0)
+        return;
+
+    MICROPROFILE_SCOPE(OpenGL_ResourceDeletion);
+    glDeleteMemoryObjectsEXT(1, &handle);
+    handle = 0;
+}
+
 void OGLSampler::Create() {
     if (handle != 0)
         return;
